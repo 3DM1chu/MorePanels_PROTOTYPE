@@ -1,6 +1,3 @@
-from typing import List
-
-
 class Status:
     def __init__(self, status_code = 0):
         self.status_code = status_code
@@ -15,17 +12,20 @@ class ServiceToCheck:
     def __init__(self, ip, port: int):
         self.ip = ip
         self.port = port
+        self.status = Status()
 
 
 class HealthCheck:
-    def __init__(self):
-        self.status = Status()
-        self.services_to_check : List[ServiceToCheck] = []
+    def __init__(self, ip, port: int):
+        self.service_to_check: ServiceToCheck = ServiceToCheck(ip, port)
+        self.iframe_data = ""
 
-    def addServiceToCheck(self, ip, port: int):
-        self.services_to_check.append(ServiceToCheck(ip, port))
+    def setServiceToCheck(self, ip, port: int):
+        self.service_to_check.ip = ip
+        self.service_to_check.port = port
 
     def check(self):
-        for service in self.services_to_check:
-            # DO PING
-            print(f"Testing {service.ip}:{service.port}...")
+        # DO PING AND GET HTML
+        print(f"Testing {self.service_to_check.ip}:{self.service_to_check.port}...")
+        self.iframe_data = "TODO"
+        return self.iframe_data

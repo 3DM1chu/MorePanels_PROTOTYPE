@@ -1,16 +1,11 @@
-from typing import List
-from healthCheck import HealthCheck
+from panels.healthCheck import HealthCheck
 
 
 class Panel:
     def __init__(self, name="DEFAULT_PANEL"):
         self.name = name
-        self.health_checks: List[HealthCheck] = []
-
-    def healthChecksCycle(self):
-        for healthCheck in self.health_checks:
-            healthCheck.check()
+        self.health_check: HealthCheck = HealthCheck("", 0)
 
     def getPanel(self):
         # GET HTML FROM SERVICE
-        return None
+        return self.health_check.check()
