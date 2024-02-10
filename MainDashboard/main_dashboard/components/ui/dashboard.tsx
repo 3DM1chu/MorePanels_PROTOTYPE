@@ -30,7 +30,7 @@ export default function Dashboard() {
       </div>
       <div className="col-span-6 row-span-7 grid-span-2 bg-black text-white border-white-100">
         {panels.map((panel) => (
-          <Panel thisPanel={panel} activePanel={activePanel} />
+          <Panel key={panel} thisPanel={panel} activePanel={activePanel} />
         ))}
       </div>
     </div>

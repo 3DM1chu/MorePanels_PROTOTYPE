@@ -1,31 +1,28 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 from panelManager import PanelManager
 from panels.panel import Panel
 
 
 app = FastAPI()
-i = 1
-
 panelManager = PanelManager()
+origins = [
+    "http://localhost:3000",
+]
 
-
-@app.middleware("http")
-async def add_cors_headers(request, call_next):
-    response = await call_next(request)
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    return response
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/panels")
 def get_panels():
-    global i
-    if i == 1:
-        panelManager.addPanel(Panel("DASHBOARD " + str(i), "http://192.168.0.38:5000/"))
-    else:
-        panelManager.addPanel(Panel("DASHBOARD " + str(i), "http://localhost:4200"))
-    i = i + 1
     print(panelManager.getPanels())
     return panelManager.getPanels()
 
@@ -43,9 +40,10 @@ class PanelPostBody(BaseModel):
 @app.post("/panel")
 def add_new_panel(panel: PanelPostBody):
     panelManager.addPanel(Panel(panel.name, panel.url))
-    return panelManager.getPanels()
+    return {'resp': 'OK'}
 
 
 @app.delete("/panel")
-def delete_panel(name: str):
-    return {"message": f"TODO {name}"}
+def delete_panel(panelToRemove: PanelPostBody):
+    panelManager.deletePanel(panelToRemove.name)
+    return {"message": f"REMOVED {panelToRemove.name}"}
