@@ -11,4 +11,4 @@ class PanelManager:
         self.panels.append(new_panel)
 
     def getPanels(self):
-        return self.panels
+        return {"panels": self.panels}
