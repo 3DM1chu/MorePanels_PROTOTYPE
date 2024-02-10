@@ -1,0 +1,8 @@
+{
+    "panels": [
+        {
+            "name": "tt",
+            "url": "http://localhost:3000/essa"
+        }
+    ]
+}
